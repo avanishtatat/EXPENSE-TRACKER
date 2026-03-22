@@ -1,7 +1,7 @@
 require("dotenv").config();
-const express = require("express"); 
+const express = require("express");
 const cors = require("cors");
-const path = require("path"); 
+const path = require("path");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const incomeRoutes = require("./routes/incomeRoutes");
@@ -16,7 +16,7 @@ const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "*",
-    methods: ["POST","PUT","PATCH","GET","DELETE"],
+    methods: ["POST", "PUT", "PATCH", "GET", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 )
@@ -35,13 +35,17 @@ app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 
 // Serve uploads folder 
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const port = process.env.PORT || 3000 ;
+const port = process.env.PORT || 3000;
 
-// Start the server
+// Start the server only for local/runtime environments.
+// Vercel serverless runtime imports this file and uses the exported app.
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`)
+  });
+}
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`)
-})
+module.exports = app;
 

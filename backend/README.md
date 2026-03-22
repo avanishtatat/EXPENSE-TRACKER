@@ -26,6 +26,12 @@ JWT_SECRET=your_strong_random_secret
 CLIENT_URL=http://localhost:5173
 ```
 
+You can also start from:
+
+```bash
+cp .env.example .env
+```
+
 ## Run
 
 Development:
@@ -41,6 +47,23 @@ npm start
 ```
 
 Server entry point: `server.js`
+
+## Deploy On Vercel
+
+This backend is configured for Vercel serverless deployment using:
+
+- `api/index.js`
+- `vercel.json`
+
+Required environment variables in Vercel:
+
+- `MONGO_URI`
+- `JWT_SECRET`
+- `CLIENT_URL` (your frontend Vercel URL)
+
+Optional:
+
+- `PORT` (not required by Vercel)
 
 ## API Routes
 
@@ -79,9 +102,11 @@ Authorization: Bearer <token>
 
 ## Uploads
 
-Uploaded images are stored in the local `uploads` directory and served via:
+Image uploads now happen directly from the client (frontend) to Cloudinary.
 
-- `GET /uploads/<filename>`
+User's profileImageUrl is stored in the database as a Cloudinary URL.
+
+Backend `/api/v1/auth/upload-image` endpoint is deprecated but can remain for backward compatibility.
 
 ## Common Issues
 

@@ -52,9 +52,31 @@ Open the app at the URL shown by Vite (usually `http://localhost:5173`).
 
 ## Notes
 
-- Frontend API base URL is currently hardcoded in `frontend/expense-tracker/src/utils/apiPaths.js`.
-- Backend should run on `PORT=5000` to match the current frontend base URL.
+- Frontend API base URL uses `VITE_API_BASE_URL` and falls back to `http://localhost:5000`.
 - Uploaded files are served from `/uploads` on the backend.
+
+## Deploy To Vercel (Frontend + Backend)
+
+Deploy as two separate Vercel projects from the same repository.
+
+### 1) Backend Project
+
+- Root Directory: `backend`
+- Framework Preset: `Other`
+- Build settings: default (uses `backend/vercel.json`)
+- Environment variables:
+  - `MONGO_URI`
+  - `JWT_SECRET`
+  - `CLIENT_URL=https://<frontend-project>.vercel.app`
+
+### 2) Frontend Project
+
+- Root Directory: `frontend/expense-tracker`
+- Framework Preset: `Vite`
+- Environment variables:
+  - `VITE_API_BASE_URL=https://<backend-project>.vercel.app`
+
+Frontend routing refresh is handled by `frontend/expense-tracker/vercel.json`.
 
 ## API Base Paths
 
