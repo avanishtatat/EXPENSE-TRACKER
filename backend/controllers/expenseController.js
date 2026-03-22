@@ -68,6 +68,7 @@ exports.downloadExpenseExcel = async (req, res) => {
     xlsx.writeFile(wb, 'expense_details.xlsx'); 
     res.download('expense_details.xlsx');  
   } catch (error) {
+    console.error("Error download expense excel:", error)
     res.status(500).json({message: "Server Error"})
   }
 };
