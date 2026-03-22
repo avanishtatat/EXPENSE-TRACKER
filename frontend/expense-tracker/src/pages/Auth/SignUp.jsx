@@ -17,62 +17,62 @@ const SignUp = () => {
 
   const [error, setError] = useState(null);
 
-  const { updateUser } = useContext(UserContext); 
+  const { updateUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   // Handle Singup Form Submit 
   const handleSignUp = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
-    let profileImageUrl = ""; 
+    let profileImageUrl = "";
 
-    if (!fullName) { 
-      setError("Please enter your name") 
-      return ;
-    }; 
+    if (!fullName) {
+      setError("Please enter your name")
+      return;
+    };
 
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address."); 
-      return ; 
-    }; 
+      setError("Please enter a valid email address.");
+      return;
+    };
 
-    if(!password) { 
-      setError("Please enter the password"); 
-      return ; 
-    }; 
+    if (!password) {
+      setError("Please enter the password");
+      return;
+    };
 
-    setError(""); 
+    setError("");
 
     // SignUp API Call
 
-    try{
+    try {
 
       // Upload image if present 
-      if(profilePic) {
-        const imgUploadRes = await uploadImage(profilePic); 
+      if (profilePic) {
+        const imgUploadRes = await uploadImage(profilePic);
         profileImageUrl = imgUploadRes.imageUrl || "";
       }
 
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-        fullName, 
+        fullName,
         email,
         password,
         profileImageUrl
-      }); 
+      });
 
-      const {token, user} = response.data; 
+      const { token, user } = response.data;
 
-      if(token) {
-        localStorage.setItem("token", token); 
-        updateUser(user); 
-        navigate("/dashboard"); 
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        navigate("/dashboard");
       }
-    }catch(error){
-      if(error.response && error.response.data.message) {
+    } catch (error) {
+      if (error.response && error.response.data.message) {
         setError(error.response.data.message);
-      }else {
-        setError("Something went wrong. Please try again."); 
+      } else {
+        setError("Something went wrong. Please try again.");
       }
     }
   };
